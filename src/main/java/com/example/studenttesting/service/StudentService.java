@@ -7,7 +7,7 @@ import com.example.studenttesting.model.StudentDto;
 import org.springframework.stereotype.Service;
 
 @Service
-public class StudentService {
+public interface StudentService {
     public StudentDto createStudent(Student student);
     public List<StudentDto> getAllStudent(Student student);
     public void deleteStudent(Long id);

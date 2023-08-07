@@ -1,35 +1,66 @@
 package com.example.studenttesting.service;
 
+import com.example.studenttesting.Repo.StudentRepo;
 import com.example.studenttesting.model.Student;
 import com.example.studenttesting.model.StudentDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class StudentServiceImpl implements StudentService {
+
+    @Autowired
+    private StudentRepo studentRepo;
+
     @Override
     public StudentDto createStudent(Student student) {
-        return null;
+        return studentDto(studentRepo.save(student)); // not send id
     }
 
     @Override
     public List<StudentDto> getAllStudent(Student student) {
-        return null;
+        return studentListDto(studentRepo.findAll());
     }
 
     @Override
     public void deleteStudent(Long id) {
-
+        studentRepo.deleteById(id);
     }
 
     @Override
     public StudentDto editStudent(Student student) {
-        return null;
+        return studentDto(studentRepo.save(student)); // send id
     }
 
     @Override
     public StudentDto getStudentById(Long id) {
-        return null;
+        return studentDto(studentRepo.findById(id).get());
+    }
+
+    private StudentDto studentDto(Student student){
+        StudentDto studentDto = new StudentDto();
+        studentDto.setId(student.getId());
+        studentDto.setName(student.getName());
+        studentDto.setAge(student.getAge());
+        studentDto.setPhone(student.getPhone());
+        studentDto.setActive(student.isActive());
+        return studentDto;
+    }
+
+    private List<StudentDto> studentListDto(List<Student> students){
+        List<StudentDto> studentListDto = new ArrayList<>();
+        for (Student student: students){
+            StudentDto studentDto = new StudentDto();
+            studentDto.setId(student.getId());
+            studentDto.setName(student.getName());
+            studentDto.setAge(student.getAge());
+            studentDto.setPhone(student.getPhone());
+            studentDto.setActive(student.isActive());
+            studentListDto.add(studentDto);
+        }
+        return studentListDto;
     }
 }
