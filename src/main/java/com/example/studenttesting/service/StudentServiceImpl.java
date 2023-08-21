@@ -12,8 +12,12 @@ import java.util.List;
 @Service
 public class StudentServiceImpl implements StudentService {
 
-    @Autowired
     private StudentRepo studentRepo;
+
+    @Autowired
+    public StudentServiceImpl(StudentRepo studentRepo) {
+        this.studentRepo = studentRepo;
+    }
 
     @Override
     public StudentDto createStudent(Student student) {
