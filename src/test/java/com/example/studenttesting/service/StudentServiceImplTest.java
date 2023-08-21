@@ -50,6 +50,22 @@ public class StudentServiceImplTest {
         Assertions.assertEquals("phone3", studentDto.getPhone());
         Assertions.assertTrue(studentDto.isActive());
     }
+
+    @Test
+    public void editStudent_thenValidate(){
+        studentService = new StudentServiceImpl(studentRepo);
+        Student student = createStudentWithID(1L,"Ahmed", 20, "01113903660", true);
+
+        Mockito.when(studentRepo.save(student)).thenReturn(createStudentWithID(1L, "Ahmed", 20, "01113903660", true));
+
+        StudentDto studentDto = studentService.editStudent(student);
+        Assertions.assertEquals(1, studentDto.getId());
+        Assertions.assertEquals("Ahmed", studentDto.getName());
+        Assertions.assertEquals(20, studentDto.getAge());
+        Assertions.assertEquals("01113903660",studentDto.getPhone());
+        Assertions.assertTrue(studentDto.isActive());
+    }
+
     private Student createStudent(String name, int age, String phone, boolean active){
         return new Student(name, age, phone, active);
     }
