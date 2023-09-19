@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 public class StudentServiceImplTest {
@@ -64,6 +65,26 @@ public class StudentServiceImplTest {
         Assertions.assertEquals(20, studentDto.getAge());
         Assertions.assertEquals("01113903660",studentDto.getPhone());
         Assertions.assertTrue(studentDto.isActive());
+    }
+
+    @Test
+    public void getStudentById_thenValidate(){
+        studentService = new StudentServiceImpl(studentRepo);
+        Student student = createStudentWithID(1L, "Islam", 20, "01113903660", true);
+        Mockito.when(studentRepo.findById(1L)).thenReturn(Optional.of(student));
+        StudentDto studentDto = studentService.getStudentById(1L);
+        Assertions.assertEquals(1,studentDto.getId());
+        Assertions.assertEquals("Islam",studentDto.getName());
+        Assertions.assertEquals(20,studentDto.getAge());
+        Assertions.assertEquals("01113903660",studentDto.getPhone());
+        Assertions.assertTrue(studentDto.isActive());
+    }
+
+    @Test
+    public void deleteStudent_thenValidate(){
+        studentService = new StudentServiceImpl(studentRepo);
+        studentService.deleteStudent(1L);
+        Mockito.verify(studentRepo, Mockito.times(1)).deleteById(1L);
     }
 
     private Student createStudent(String name, int age, String phone, boolean active){
