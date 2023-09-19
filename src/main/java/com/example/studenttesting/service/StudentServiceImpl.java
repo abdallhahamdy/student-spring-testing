@@ -20,7 +20,10 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public StudentDto createStudent(Student student) {
+    public StudentDto createStudent(Student student) throws Exception {
+        if (student.getId() > 0 || student.getId() < 0) {
+            throw new Exception("you must not send id");
+        }
         return studentDto(studentRepo.save(student)); // not send id
     }
 
